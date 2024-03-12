@@ -9,7 +9,7 @@ routes.get("/", async (req, res) => {
       description:
         "A simple Messenging app built with NodeJs, EJS, MongoDB and Socket.io",
     };
-    res.render("index", {
+    res.render("admin/create-drawing", {
       locals,
     });
   } catch (error) {
