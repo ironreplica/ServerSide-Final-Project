@@ -86,7 +86,7 @@ document.getElementById("load").addEventListener('change', function(){
 })
 
 reader.onload = function () {
-    var data = JSON.parse(reader.result);
+    var data = JSON.parse(reader.result); //turns JSON into a usable object
     var image = new Image();
     image.onload = function () {
         ctx.clearRect(0,0, canvas.width, canvas.height);
