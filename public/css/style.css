@@ -8,14 +8,23 @@ body {
 
   margin: 0;
 }
-.canvas-wrapper{
+.canvas-wrapper {
   width: 100%;
   height: 420px;
-
 }
-canvas{
+canvas {
   width: 700px;
   height: 420px;
-  position: fixed;
+  position: absolute;
   background-color: lightblue;
+}
+.drawings-container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: auto;
+}
+#messages {
+  width: 100%;
+  height: 840px;
 }
