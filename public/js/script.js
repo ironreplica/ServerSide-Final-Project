@@ -97,12 +97,10 @@ socket.on("chat message", (msg) => {
   const messages = document.getElementById("messages");
   const img = document.createElement("img");
   messages.appendChild(img);
-  var file = new Blob([msg], {
-    type: "application/json",
-  });
-  console.log(file);
   var data = JSON.parse(msg);
-  var image = new Image();
-
   img.src = data.image;
+  var drawingsContainer = document.getElementsByClassName("drawings-container")
+  messages.scrollTop = messages.scrollHeight;
+  console.log(messages.scrollTop);
+  console.log(messages.scrollHeight);
 });
