@@ -17,7 +17,7 @@ const connectDB = require("./config/db"); // Connect to DB
 connectDB();
 
 app.use(express.static(path.join(__dirname, "public")));
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(expressLayouts);
 app.set("layout", "./layouts/main");
@@ -33,6 +33,5 @@ io.on("connection", (socket) => {
 
 app.use("/", require("./routes/index"));
 app.use("/", require("./routes/admin"));
-
 
 server.listen(PORT, () => console.log(`server is running on: ${PORT}`));
