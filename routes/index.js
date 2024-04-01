@@ -1,6 +1,6 @@
 const express = require("express");
 const myController = require("../controllers");
-const routes = require("express").Router();
+const routes = express.Router();
 
 routes.get("/", async (req, res) => {
   try {
