@@ -99,8 +99,8 @@ socket.on("chat message", (msg) => {
   messages.appendChild(img);
   var data = JSON.parse(msg);
   img.src = data.image;
-  var drawingsContainer = document.getElementsByClassName("drawings-container")
-  messages.scrollTop = messages.scrollHeight;
+  var drawingsContainer = document.getElementsByClassName("drawings-container");
+  messages.scrollTop = messages.scrollHeight + img.height;
   console.log(messages.scrollTop);
   console.log(messages.scrollHeight);
 });
