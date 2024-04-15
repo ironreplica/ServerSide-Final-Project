@@ -1,21 +1,44 @@
-// button functionality, page functionality
 var canvas = document.getElementById("drawing-canvas");
+var fillerCanvas = document.getElementById("filler-canvas");
 
-// canvas context, which is 2d
-var ctx = canvas.getContext("2d");
-resize();
+const lineGap = 60; // Gap between lines on the paper
+var ctx = canvas.getContext("2d"); // Canvas context, which is 2d
+var ctxF = fillerCanvas.getContext("2d");
+ctxF.strokeStyle = "black";
+ctx.strokeStyle = "black";
+resize(ctx);
+resize(ctxF);
+
+const messages = document.getElementById("messages");
+messages.scrollTop = 300;
 
 var pos = { x: 0, y: 0 };
 
 var reader = new FileReader();
-// resize when window is resized
-window.addEventListener("resize", resize);
+
+window.addEventListener("resize", resize); // Resize when window is resized
+window.addEventListener("load", drawLines(ctx));
+drawLines(ctxF);
 
 document.addEventListener("mousemove", draw);
 document.addEventListener("mousedown", setPosition);
 document.addEventListener("mousenter", setPosition);
 
-// setting the mouse pos
+/* Lines on "paper" */
+function drawLines(canvasContext){
+  var totalLines = canvasContext.canvas.height / lineGap;
+  console.log(canvasContext.canvas.height);
+  for(var i = 1; i <= totalLines; i++){
+    canvasContext.beginPath();
+    canvasContext.moveTo(0,lineGap*i);
+    canvasContext.lineTo(712,lineGap*i);
+    canvasContext.strokeStyle = "black";
+    ctx.lineWidth = 1;
+    canvasContext.stroke();
+  }
+}
+
+/* Setting the mouse position */
 function setPosition(e) {
   // Compensate for container
   var rect = canvas.getBoundingClientRect();
@@ -26,25 +49,23 @@ function setPosition(e) {
   pos.y = e.offsetY * scaleY;
 }
 
-// size the canvas to fit the screen
-function resize() {
-  //  Match the size of the container for the canvas
-  var rect = canvas.getBoundingClientRect();
+/* Size the canvas to fit the screen */
+function resize(canvasContext) {
+  var rect = canvasContext.canvas.getBoundingClientRect();   //  Match the size of the container for the canvas
 
-  ctx.canvas.width = rect.width;
-  ctx.canvas.height = rect.height;
+  canvasContext.canvas.width = rect.width;
+  canvasContext.canvas.height = rect.height;
 }
 
-// draw on canvas
+/* Drawing on the canvas */
 function draw(e) {
-  // Check for mouse click
-  if (e.buttons !== 1) return;
+  if (e.buttons !== 1) return;   // Check for mouse click
 
   ctx.beginPath();
 
   ctx.lineWidth = 2;
   ctx.lineCap = "round";
-  ctx.strokeStyle = "#000000";
+  
 
   ctx.moveTo(pos.x, pos.y);
   setPosition(e);
@@ -53,54 +74,44 @@ function draw(e) {
   ctx.stroke();
 }
 
+/* Clear canvas button */
+document.getElementById("clear").addEventListener("click", function(){
+  ctx.clearRect(0,0, ctx.canvas.width, ctx.canvas.height);
+  drawLines(ctx);
+})
+
+/* Colored buttons */
+document.querySelectorAll("[class^=btn-color]").forEach((color) => {
+  color.addEventListener("click", function(e){
+    console.log(e.target.id);
+    ctx.strokeStyle = String(e.target.id); 
+  })
+})
+
+/* Send image button */
 document.getElementById("send").addEventListener("click", function () {
-  // get canvas info
   var canvasContents = canvas.toDataURL(); // Image data URL
   var data = { image: canvasContents, date: Date.now() };
   var string = JSON.stringify(data);
 
-  // Create a blod from the json
-
-  // Create an object URL for the blob
-  //   var fileURL = URL.createObjectURL(file);
-
-  //   Create a temporary anchor element to create a download
-  //   var a = document.createElement("a");
-  //   a.href = fileURL;
-  //   a.download = "canvas-drawing.json";
-
-  //   document.body.appendChild(a);
-  //   a.click(); // Click the download button programatically
   socket.emit("chat message", string);
-  //   document.body.removeChild(a);
-  //   URL.revokeObjectURL(fileURL);
 });
 
-document.getElementById("load").addEventListener("change", function () {
-  if (this.files[0]) {
-    // read the contents of the first file in the input field
-    reader.readAsText(this.files[0]);
-  }
-});
-
-// reader.onload = function () {
-//   var data = JSON.parse(reader.result); //turns JSON into a usable object
-//   var image = new Image();
-//   image.onload = function () {
-//     ctx.clearRect(0, 0, canvas.width, canvas.height);
-//     ctx.drawImage(image, 0, 0);
-//   };
-//   image.src = data.image;
-// };
+/* Recieving chat message */
 socket.on("chat message", (msg) => {
   console.log("Chat message");
-  const messages = document.getElementById("messages");
+  if(fillerCanvas){ // Remove filler canvas for real img
+    fillerCanvas.remove();
+  }
   const img = document.createElement("img");
   messages.appendChild(img);
   var data = JSON.parse(msg);
+  console.log(data);
+
   img.src = data.image;
   var drawingsContainer = document.getElementsByClassName("drawings-container");
-  messages.scrollTop = messages.scrollHeight + img.height;
-  console.log(messages.scrollTop);
+  img.onload = function() { // Wait for img to load to scroll
+      messages.scrollTo(0, messages.scrollHeight);
+  }
   console.log(messages.scrollHeight);
 });

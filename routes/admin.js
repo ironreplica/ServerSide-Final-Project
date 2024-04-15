@@ -7,7 +7,12 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const jwtSecret = process.env.JWT_SECRET;
 
-//* Register Account, POST /register
+// * Authentication Middleware
+const authMiddleWare = (req,res,next) => {
+  
+}
+
+// * Register Account, POST /register
 routes.post("/create-account", async (req, res) => {
   try {
     const { username, password } = req.body; //! Error protection here?
@@ -35,7 +40,7 @@ routes.post("/create-account", async (req, res) => {
   }
 });
 
-//* Login Account, POST /login
+// * Login Account, POST /login
 routes.post("/login", async (req, res) => {
   try {
     const { username, password } = req.body;
@@ -64,6 +69,23 @@ routes.post("/login", async (req, res) => {
 
     console.log("Login succesful!");
     ////res.redirect("/create-drawing");
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+// * add authMiddleWare
+
+routes.get("/", async (req, res) => {
+  try {
+    const locals = {
+      title: "PictoJS",
+      description:
+        "This is inspired by the famous PictoChat, a Nintendo DS communication game. Built with NodeJS, Socket.IO. ",
+    };
+    res.render("admin/create-drawing", {
+      locals,
+    });
   } catch (error) {
     console.log(error);
   }

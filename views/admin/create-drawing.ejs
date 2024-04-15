@@ -1,16 +1,28 @@
-<div class="admin-title">
-  <h2>PictoJS</h2>
+<div class="title pixelify-sans-test">
+  <h2>PICT0JS</h2>
 </div>
-<input type="file" id="load" value="Load image" />
+<!-- //<input type="file" id="load" value="Load image" /> -->
 <div class="drawings-container">
+  <div id="messages" class="canvas-wrapper">
+    <canvas id="filler-canvas"></canvas>
+  </div>
   <div class="canvas-wrapper">
     <canvas id="drawing-canvas"></canvas>
-    <input type="button" id="send" value="Send image" />
+    <!-- <i class="fa-brands fa-space-awesome"></i> -->
+    <!-- https://fontawesome.com/ -->
   </div>
-
-  <div id="messages" class="canvas-wrapper">
-    <img src="" alt="Place holder" />
-  </div>
+  <div class="btn-wrapper pixelify-sans-test">
+    <input class="btn pixelify-sans-test"type="button" id="clear" value="Clear image" />
+    <input class="btn-color"type="button" id="red" style="background-color: red;" value=" " />
+    <input class="btn-color"type="button" id="orange" style="background-color: orange;" value=" " />
+    <input class="btn-color"type="button" id="yellow" style="background-color: yellow;" value=" " />
+    <input class="btn-color"type="button" id="green" style="background-color: green;" value=" " />
+    <input class="btn-color"type="button" id="blue" style="background-color: blue;" value=" " />
+    <input class="btn-color"type="button" id="purple" style="background-color: purple;" value=" " />
+    <input class="btn-color"type="button" id="black" style="background-color: black;" value=" " />
+    <input class="btn pixelify-sans-test"type="button" id="send" value="Send image" />
+  </div> 
 </div>
+
 
 <script src="/public/"></script>
